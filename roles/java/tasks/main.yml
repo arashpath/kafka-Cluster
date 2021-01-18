@@ -1,0 +1,18 @@
+# vi: set ft=ansible :
+---
+# file: roles/java/tasks/main.yml
+- name: create java home dir
+  file: path="{{ JAVA_HOME }}" state=directory
+- name: install java
+  unarchive:
+    src: "{{ JAVA_FILE }}"
+    dest: "{{ JAVA_HOME }}"
+    extra_opts: "--strip-components=1"
+    creates: "{{ JAVA_HOME }}/bin/java"
+  when: JAVA_FILE is defined
+- name: set java in profile
+  copy:
+    dest: /etc/profile.d/java.sh
+    content: |
+      export JAVA_HOME={{ JAVA_HOME }}
+      export PATH=$JAVA_HOME/bin:$PATH

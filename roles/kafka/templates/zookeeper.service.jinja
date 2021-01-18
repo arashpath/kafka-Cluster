@@ -1,0 +1,17 @@
+[Unit]
+Description=Zookeeper Daemon
+Documentation=http://zookeeper.apache.org
+Requires=network.target
+After=network.target
+
+[Service]
+Type=forking
+WorkingDirectory={{ KAFKA_HOME }}
+Environment="JAVA_HOME={{ JAVA_HOME }}"
+ExecStart={{ KAFKA_HOME }}/bin/zookeeper-server-start.sh -daemon {{ KAFKA_HOME }}/config/zookeeper.properties
+ExecStop={{ KAFKA_HOME }}/bin/zookeeper-server-stop.sh -daemon {{ KAFKA_HOME }}/config/zookeeper.properties
+TimeoutSec=30
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

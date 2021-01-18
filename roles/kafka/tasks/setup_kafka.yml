@@ -1,0 +1,21 @@
+# file: roles/kafka/tasks/setup_kafka.yml
+- block:
+
+  - name: kafka broker log dir is present
+    file: dest="{{ BR_LOG_DIR }}" state=directory
+  
+  - name: configure kafka
+    template: 
+      src: server.properties.jinja 
+      dest: "{{ KAFKA_HOME }}/config/server.properties"
+      backup: yes
+
+  - name: systemctl for kafka
+    template: 
+      src: kafka.service.jinja
+      dest: /etc/systemd/system/kafka.service
+  
+  - name: start & enable kafka
+    systemd: name=kafka state=started enabled=yes
+  
+  when: "'kafka' in group_names"  

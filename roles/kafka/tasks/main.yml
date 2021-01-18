@@ -1,0 +1,20 @@
+# file: roles/kafka/tasks/main.yml
+- setup: gather_subset=network
+# Disable Swap
+# Make host entries
+- blockinfile:
+    dest: /etc/hosts
+    block: |
+      # ZooKeeper Servers
+      {% for node in groups['zookeeper'] %}
+      {{ hostvars[node]['ansible_default_ipv4'].address }} zookeeper{{ hostvars[node]['ZK_ID'] }}
+      {% endfor %}
+      # Kafka Servers
+      {% for node in groups['kafka'] %}
+      {{ hostvars[node]['ansible_default_ipv4'].address }} kafka{{ hostvars[node]['ZK_ID'] }}
+      {% endfor %}
+# Install nc
+- yum: name=nmap-ncat
+- import_tasks: install_kafka.yml
+- import_tasks: setup_zookeeper.yml
+- import_tasks: setup_kafka.yml

@@ -1,0 +1,14 @@
+---
+# file: roles/lxd_invenroty/defaults/main.yml
+lxc_alias: centos/7/amd64
+#lxc_img_server: https://images.linuxcontainers.org
+#lxc_img_server_protocal: simplestreams
+
+#lxd_k8s_config:
+#  limits.memory.swap: "false"
+#  linux.kernel_modules: ip_tables,ip6_tables,netlink_diag,nf_nat,overlay
+#  raw.lxc: "lxc.apparmor.profile=unconfined\nlxc.cap.drop= \nlxc.cgroup.devices.allow=a\nlxc.mount.auto=proc:rw sys:rw"
+#  security.privileged: "true"
+#  security.nesting: "true"
+
+# ,ip_vs,ip_vs_sh,ip_vs_rr,ip_vs_wrr,nf_conntrack

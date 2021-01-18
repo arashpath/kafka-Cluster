@@ -1,0 +1,11 @@
+# vi: set ft=ansible :
+---
+# file: roles/lxd_invenrory/tasks/delete_containers.yml
+- name: Remove Containers
+  lxd_container:
+      name: "{{ inventory_hostname }}"
+      state: absent
+  delegate_to: localhost
+  register: rm_lxd
+- meta: end_play
+  when: rm_lxd is defined and rm_lxd.changed

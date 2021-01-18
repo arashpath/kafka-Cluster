@@ -1,0 +1,9 @@
+# file: roles/kafka/tasks/install_kafka.yml
+- name: create kafka home dir
+  file: path="{{ KAFKA_HOME }}" state=directory
+- name: install kafka
+  unarchive:
+    src: "{{ KAFKA_FILE }}"
+    dest: "{{ KAFKA_HOME }}"
+    extra_opts: "--strip-components=1"
+    creates: "{{ KAFKA_HOME }}/bin"

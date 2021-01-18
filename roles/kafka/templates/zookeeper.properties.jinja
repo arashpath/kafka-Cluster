@@ -1,0 +1,17 @@
+# the directory where the snapshot is stored.
+dataDir={{ ZK_DATA_DIR }}
+# the port at which the clients will connect
+clientPort=2181
+# disable the per-ip limit on the number of connections since this is a non-production config
+maxClientCnxns=0
+# The basic time unit in milliseconds used by ZooKeeper. It is used to do heartbeats and the minimum sesion timeout will be twice the tickTime.
+tickTime=2000
+# The number of ticks that the initial synchronization phase can take
+initLimit=10
+# The number of ticks that can pass between
+# sending a request and getting an acknowledgment 
+syncLimit=5
+# zoo servers
+{% for node in groups['zookeeper'] %}
+server.{{ hostvars[node]['ZK_ID'] }}=zookeeper{{ hostvars[node]['ZK_ID'] }}:2888:3888
+{% endfor %}

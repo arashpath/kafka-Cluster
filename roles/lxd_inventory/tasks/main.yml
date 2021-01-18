@@ -1,0 +1,8 @@
+# vi: set ft=ansible :
+---
+# file: roles/lxd_invenrory/tasks/main.yml
+
+- import_tasks: create_containers.yml
+  tags: lxd
+- import_tasks: delete_containers.yml
+  tags: ['never', 'clean_lxd']

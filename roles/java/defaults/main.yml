@@ -1,0 +1,4 @@
+---
+# file: roles/java/defaults/main.yml
+JAVA_HOME: /opt/jdk
+JAVA_FILE: jdk-8u271-linux-x64.tar.gz

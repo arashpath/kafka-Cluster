@@ -1,0 +1,22 @@
+# vi: set ft=ansible :
+---
+# file: roles/lxd_invenrory/tasks/create_containers.yml
+- name: created lxd container
+  lxd_container:
+    name: "{{ inventory_hostname }}"
+    state: started
+    config: "{{ lxd_k8s_config | default(omit) }}"
+    source:
+      type: image
+      mode: pull
+      server: "{{ lxc_img_server | default(omit) }}"
+      protocal: "{{ lxc_img_server_protocal | default(omit) }}"
+      alias: "{{ lxc_alias }}"
+    devices:
+      eth0:
+        type: nic
+        nictype: bridged
+        parent: lxdbr0
+        ipv4.address: "{{ ip | default(omit) }}"
+    wait_for_ipv4_addresses: yes
+  delegate_to: localhost

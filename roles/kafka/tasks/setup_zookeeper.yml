@@ -1,0 +1,24 @@
+# file: roles/kafka/tasks/setup_zookeeper.yml
+- block:
+
+  - name: zookeeper data dir is present
+    file: dest="{{ ZK_DATA_DIR }}" state=directory
+  
+  - name: set zookeeper node id
+    copy: dest="{{ ZK_DATA_DIR }}/myid" content="{{ ZK_ID }}"
+  
+  - name: configure zookeeper
+    template: 
+      src: zookeeper.properties.jinja 
+      dest: "{{ KAFKA_HOME }}/config/zookeeper.properties"
+      backup: yes
+
+  - name: systemctl for zookeeper
+    template: 
+      src: zookeeper.service.jinja
+      dest: /etc/systemd/system/zookeeper.service
+  
+  - name: start & enable zookeeper
+    systemd: name=zookeeper state=started enabled=yes
+  
+  when: "'zookeeper' in group_names"  
