@@ -9,11 +9,13 @@
       src: server.properties.jinja 
       dest: "{{ KAFKA_HOME }}/config/server.properties"
       backup: yes
+    notify: restart kafka
 
   - name: systemctl for kafka
     template: 
       src: kafka.service.jinja
       dest: /etc/systemd/system/kafka.service
+    notify: restart kafka
   
   - name: start & enable kafka
     systemd: name=kafka state=started enabled=yes

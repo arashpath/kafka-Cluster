@@ -1,0 +1,21 @@
+# This workflow will test Playbook with ANSIBL & LXD
+name: Apache Kafka 
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: cache lxd image locally 
+      run: |
+        sudo lxc image copy images:centos/7 local: --copy-aliases
+    - name: install pre-requisits
+      run: sudo apt install python-netaddr
+    - name: Provision Cluster
+      run: sudo ansible-playbook playbook.yml     

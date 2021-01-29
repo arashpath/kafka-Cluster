@@ -30,7 +30,11 @@
   ```
 - Port: 9092
 - test
-  ```
+  ```bash
   nc -vz localhost 9092
-  
+  # not required as auto.create.topics.enable=true
+  # ./bin/kafka-topics.sh --zookeeper zookeeper1:2181/kafka --create --topic first_topic --replication-factor 1 --partitions 3
+  ./bin/kafka-console-producer.sh --broker-list kafka1:9092 --topic first_topic
+  ./bin/kafka-console-consumer.sh --bootstrap-server kafka1:9092 --topic first_topic --from-beginning
+  ./bin/kafka-topics.sh --zookeeper zookeeper1:2181/kafka --list
   ```

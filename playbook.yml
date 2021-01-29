@@ -1,9 +1,11 @@
 #!/usr/bin/ansible-playbook
 ---
-- hosts: all
+- hosts: kafka,zookeeper
   become: true
+  vars:
+    KAFKA_FILE: kafka_2.13-2.7.0.tgz
+    JAVA_FILE: jdk-8u281-linux-x64.tar.gz
   pre_tasks:
   - import_role: name=lxd_inventory
-  - import_role: name=java
   roles:
   - kafka
