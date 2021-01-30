@@ -4,6 +4,5 @@
   become: true
   pre_tasks:
   - import_role: name=lxd_inventory
-  - import_role: name=java
   roles:
   - kafka

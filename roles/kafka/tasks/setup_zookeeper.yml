@@ -5,18 +5,20 @@
     file: dest="{{ ZK_DATA_DIR }}" state=directory
   
   - name: set zookeeper node id
-    copy: dest="{{ ZK_DATA_DIR }}/myid" content="{{ ZK_ID }}"
+    copy: dest="{{ ZK_DATA_DIR }}/myid" content="{{ ZK_ID }}" force=no
   
   - name: configure zookeeper
     template: 
       src: zookeeper.properties.jinja 
       dest: "{{ KAFKA_HOME }}/config/zookeeper.properties"
       backup: yes
-
+    notify: restart zookeeper
+    
   - name: systemctl for zookeeper
     template: 
       src: zookeeper.service.jinja
       dest: /etc/systemd/system/zookeeper.service
+    notify: restart zookeeper
   
   - name: start & enable zookeeper
     systemd: name=zookeeper state=started enabled=yes

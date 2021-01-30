@@ -1,5 +1,8 @@
 # file: roles/kafka/tasks/main.yml
-- setup: gather_subset=network
+- block:
+  - setup: gather_subset=network
+  - set_fact: ip="{{ ansible_default_ipv4.address }}"
+  when: ip is not defined
 # Disable Swap
 # Make host entries
 - blockinfile:
@@ -7,11 +10,11 @@
     block: |
       # ZooKeeper Servers
       {% for node in groups['zookeeper'] %}
-      {{ hostvars[node]['ansible_default_ipv4'].address }} zookeeper{{ hostvars[node]['ZK_ID'] }}
+      {{ hostvars[node]['ip'] }} zookeeper{{ hostvars[node]['ZK_ID'] }}
       {% endfor %}
-      # Kafka Servers
+      # Kafka Brokers
       {% for node in groups['kafka'] %}
-      {{ hostvars[node]['ansible_default_ipv4'].address }} kafka{{ hostvars[node]['ZK_ID'] }}
+      {{ hostvars[node]['ip'] }} kafka{{ hostvars[node]['BR_ID'] }}
       {% endfor %}
 # Install nc
 - yum: name=nmap-ncat

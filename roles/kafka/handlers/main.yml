@@ -1,0 +1,6 @@
+---
+- name: restart zookeeper
+  systemd: name=zookeeper state=restarted
+
+- name: restart kafka
+  systemd: name=kafka state=restarted 

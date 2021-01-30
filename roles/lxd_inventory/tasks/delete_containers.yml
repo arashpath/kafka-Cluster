@@ -5,6 +5,7 @@
   lxd_container:
       name: "{{ inventory_hostname }}"
       state: absent
+      timeout: 60
   delegate_to: localhost
   register: rm_lxd
 - meta: end_play
