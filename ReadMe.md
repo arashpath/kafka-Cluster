@@ -70,3 +70,11 @@
   # Start a Consumer
   bin/kafka-console-consumer.sh --bootstrap-server kafka1:9092,kafka2:9092,kafka3:9092 --topic fourth_topic
   ```
+## SSL/TLS
+- Generate Certificates `./gen_ssl.sh`
+- ReConfigure Cluster `./playbook.yml` -e KAFKA_SSL=true
+- Test Consumer & Producer with SSL 
+  ```bash
+  bin/kafka-console-producer.sh --broker-list kafka1:9093  --topic test --producer.config client.properties
+  bin/kafka-console-consumer.sh --bootstrap-server kafka1:9093  --topic test --consumer.config client.properties --from-beginning
+  ```  
