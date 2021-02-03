@@ -4,6 +4,7 @@ KAFKA_HOME: /opt/kafka
 KAFKA_FILE: kafka_2.12-0.10.2.1.tgz
 ZK_DATA_DIR: /data/zookeeper
 BR_LOG_DIR: /data/kafka
+ZOOKEEPER_SSL: True
 KAFKA_LISTNERS:
   - { type: 'PLAINTEXT', port: 9092 }
   - { type: 'SSL', port: 9093 } 

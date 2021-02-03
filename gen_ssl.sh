@@ -12,7 +12,7 @@ keytool -keystore $cert_folder/kafka.ts.jks -alias CARoot -import \
 echo "---"
 
 echo "Create keystore for each kafkaSrv and Client ..."
-for i in 1 2 3 _client
+for i in 1 2 3 _zk1 _zk2 _zk3 _client
 do
   node="kafka$i"
   echo "Creating Keystore for $node ..."

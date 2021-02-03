@@ -6,7 +6,19 @@
   
   - name: set zookeeper node id
     copy: dest="{{ ZK_DATA_DIR }}/myid" content="{{ ZK_ID }}" force=no
-  
+
+  - name: create dir for ssl
+    file: dest="{{ KAFKA_HOME }}/config/ssl" state=directory
+    when: ZOOKEEPER_SSL is defined and ZOOKEEPER_SSL
+
+  - name: Copy SSL keystore and truststore
+    copy: src="{{ item }}" dest="{{ KAFKA_HOME }}/config/ssl/"
+    with_items:
+      - ssl/kafka.ts.jks
+      - "ssl/kafka_zk{{ ZK_ID }}.ks.jks"
+    when: ZOOKEEPER_SSL is defined and ZOOKEEPER_SSL
+
+
   - name: configure zookeeper
     template: 
       src: zookeeper.properties.jinja 
