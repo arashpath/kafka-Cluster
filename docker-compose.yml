@@ -1,0 +1,22 @@
+version: "3.5"
+
+services:
+  zoonavigator:
+    image: elkozmon/zoonavigator:latest
+    container_name: zoonavigator
+    environment:
+      HTTP_PORT: 9001
+      CONNECTION_LXDZK_NAME: ZooKeeper
+      CONNECTION_LXDZK_CONN: zookeeper1:2182,zookeeper2:2182,zookeeper3:2182
+      # For SSL
+      ZK_CLIENT_SECURE: "true"
+      ZK_SSL_KEYSTORE_PATH: /ssl/keystore.jks
+      ZK_SSL_KEYSTORE_PASSWORD: client@123
+      ZK_SSL_TRUSTSTORE_PATH: /ssl/truststore.jks
+      ZK_SSL_TRUSTSTORE_PASSWORD: kafkats@123
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./files/client.keystore.jks:/ssl/keystore.jks
+      - ./files/kafka.truststore.jks:/ssl/truststore.jks
+

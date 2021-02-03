@@ -17,15 +17,17 @@ dataDir={{ ZK_DATA_DIR }}
 # the port at which the clients will connect
 clientPort=2181
 
+{% if ZK_SSL is defined and ZK_SSL is sameas true %}
 # SSL Connection Details
-secureclientPort=2182
+secureClientPort=2182
 authProvider.x589=org.apache.zookeeper.server.auth.X589AuthenticationProvider
 serverCnxnFactory=org.apache.zookeeper.server.NettyServerCnxnFactory
-ssl.trustStore.location={{ KAFKA_HOME }}/config/ssl/kafka.ts.jks
-ssl.trustStore.password=kafkats@123
-ssl.keyStore.location={{ KAFKA_HOME }}/config/ssl/kafka_zk{{ ZK_ID }}.ks.jks
-ssl.keyStore.password=kafka_zk{{ ZK_ID }}@123
+ssl.trustStore.location={{ KAFKA_HOME }}/config/{{ ZK_TS_FILE }}
+ssl.trustStore.password={{ ZK_TS_PASS }}
+ssl.keyStore.location={{ KAFKA_HOME }}/config/{{ ZK_KS_FILE }}
+ssl.keyStore.password={{ ZK_KS_PASS }}
 ssl.clientAuth=need
+{%endif%}
 
 # disable the per-ip limit on the number of connections since this is a non-production config
 maxClientCnxns=0

@@ -18,11 +18,11 @@ advertised.listeners={% for li in KAFKA_LISTNERS -%}
 {% if "SSL" in KAFKA_LISTNERS|map(attribute="type") %}
 
 ############################## SSL/TLS ###############################
-ssl.keystore.location={{ KAFKA_HOME }}/config/ssl/kafka{{ BR_ID }}.ks.jks
-ssl.keystore.password=kafka{{ BR_ID }}@123
-ssl.key.password=kafka{{ BR_ID }}@123
-ssl.truststore.location={{ KAFKA_HOME }}/config/ssl/kafka.ts.jks
-ssl.truststore.password=kafkats@123
+ssl.keystore.location={{ KAFKA_HOME }}/config/{{ KAFKA_KS_FILE }}
+ssl.keystore.password={{ KAFKA_KS_KPASS }}
+ssl.key.password={{ KAFKA_KEY_PASS }}
+ssl.truststore.location={{ KAFKA_HOME }}/config/{{ KAFKA_TS_FILE }}
+ssl.truststore.password={{ KAFKA_KS_PASS }}
 ssl.enabled.protocols=TLSv1.2,TLSv1.1,TLSv1
 ssl.client.auth=required
 {% endif %}

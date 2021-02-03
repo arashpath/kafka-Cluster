@@ -1,3 +1,4 @@
+---
 # file: roles/kafka/tasks/setup_zookeeper.yml
 - block:
 
@@ -7,17 +8,12 @@
   - name: set zookeeper node id
     copy: dest="{{ ZK_DATA_DIR }}/myid" content="{{ ZK_ID }}" force=no
 
-  - name: create dir for ssl
-    file: dest="{{ KAFKA_HOME }}/config/ssl" state=directory
-    when: ZOOKEEPER_SSL is defined and ZOOKEEPER_SSL
-
   - name: Copy SSL keystore and truststore
-    copy: src="{{ item }}" dest="{{ KAFKA_HOME }}/config/ssl/"
+    copy: src="{{ item }}" dest="{{ KAFKA_HOME }}/config/" force=no
     with_items:
-      - ssl/kafka.ts.jks
-      - "ssl/kafka_zk{{ ZK_ID }}.ks.jks"
-    when: ZOOKEEPER_SSL is defined and ZOOKEEPER_SSL
-
+      - "{{ ZK_TS_FILE }}"
+      - "{{ ZK_KS_FILE }}"
+    when: ZK_SSL is defined and ZK_SSL
 
   - name: configure zookeeper
     template: 

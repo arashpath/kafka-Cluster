@@ -4,14 +4,11 @@
   - name: kafka broker log dir is present
     file: dest="{{ BR_LOG_DIR }}" state=directory
   
-  - name: create dir for ssl
-    file: dest="{{ KAFKA_HOME }}/config/ssl" state=directory
-
   - name: Copy SSL keystore and truststore
-    copy: src="{{ item }}" dest="{{ KAFKA_HOME }}/config/ssl/"
+    copy: src="{{ item }}" dest="{{ KAFKA_HOME }}/config/"
     with_items:
-      - ssl/kafka.ts.jks
-      - "ssl/kafka{{ BR_ID }}.ks.jks"
+      - "{{ KAFKA_TS_FILE }}"
+      - "{{ KAFKA_KS_FILE }}"
     when: KAFKA_LISTNERS | selectattr('type','equalto','SSL') | list | count > 0
 
   - name: configure kafka
