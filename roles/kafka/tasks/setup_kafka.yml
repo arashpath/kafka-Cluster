@@ -9,7 +9,8 @@
     with_items:
       - "{{ KAFKA_TS_FILE }}"
       - "{{ KAFKA_KS_FILE }}"
-    when: KAFKA_LISTNERS | selectattr('type','equalto','SSL') | list | count > 0
+    when: ( ZK_SSL is defined and ZK_SSL )  or 
+      KAFKA_LISTNERS | selectattr('type','equalto','SSL') | list | count > 0
 
   - name: configure kafka
     template: 

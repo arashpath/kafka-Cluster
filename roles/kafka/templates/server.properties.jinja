@@ -20,13 +20,13 @@ advertised.listeners={% for li in KAFKA_LISTNERS -%}
 ############################## SSL/TLS ###############################
  
 #ssl.enabled.protocols=TLSv1.2,TLSv1.1,TLSv1
-ssl.protocols=TLSv1.2
-ssl.client.auth=required
 security.inter.broker.protocol=SSL
+ssl.client.auth=required
+ssl.protocols=TLSv1.2
 
 # KeyStore Files - Broker 
 ssl.truststore.location={{ KAFKA_HOME }}/config/{{ KAFKA_TS_FILE }}
-ssl.truststore.password={{ KAFKA_KS_PASS }}
+ssl.truststore.password={{ KAFKA_TS_PASS }}
 ssl.keystore.location={{ KAFKA_HOME }}/config/{{ KAFKA_KS_FILE }}
 ssl.keystore.password={{ KAFKA_KS_PASS }}
 ssl.key.password={{ KAFKA_KEY_PASS }}
@@ -77,7 +77,7 @@ zookeeper.connect={% for node in groups['zookeeper'] -%}
 zookeeper.ssl.client.enable=true
 zookeeper.ssl.protocol=TLSv1.2
 zookeeper.clientCnxnSocket=org.apache.zookeeper.ClientCnxnSocketNetty
-zookeeper.set.acl=true
+#zookeeper.set.acl=true
 # KeyStore Files - Zookeeper 
 zookeeper.ssl.truststore.location={{ KAFKA_HOME }}/config/{{ KAFKA_TS_FILE }}
 zookeeper.ssl.truststore.password={{ KAFKA_TS_PASS }}

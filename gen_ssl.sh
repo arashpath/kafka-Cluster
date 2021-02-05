@@ -59,7 +59,8 @@ zookeeper.ssl.keystore.password="$CN"@123
 
 # Kafka Client
 security.protocol=SSL
-ssl.enabled.protocols=TLSv1.2,TLSv1.1,TLSv1
+ssl.protocol=TLSv1.2
+#ssl.enabled.protocols=TLSv1.2,TLSv1.1,TLSv1
 #ssl.client.auth=required
 ssl.truststore.location=$ssl_dir/kafka.truststore.jks
 ssl.truststore.password=kafkats@123
