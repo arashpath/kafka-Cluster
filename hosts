@@ -18,8 +18,8 @@ ZK_KS_PASS=zookeeper{{ ZK_ID }}@123
 KAFKA_TS_FILE=kafka.truststore.jks
 KAFKA_TS_PASS=kafkats@123
 KAFKA_KS_FILE=kafka{{ BR_ID }}.keystore.jks
-KAFKA_KEY_PASS=kafka{{ BR_ID }}@123
 KAFKA_KS_PASS=kafka{{ BR_ID }}@123
+KAFKA_KEY_PASS=kafka{{ BR_ID }}@123
 
 # For Testing with lxd
 [all:vars]
