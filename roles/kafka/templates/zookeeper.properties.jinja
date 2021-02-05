@@ -1,9 +1,40 @@
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+# 
+#    http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 # the directory where the snapshot is stored.
 dataDir={{ ZK_DATA_DIR }}
 # the port at which the clients will connect
 clientPort=2181
+
+{% if ZK_SSL is defined and ZK_SSL is sameas true %}
+# SSL Connection Details
+secureClientPort=2182
+authProvider.x589=org.apache.zookeeper.server.auth.X589AuthenticationProvider
+serverCnxnFactory=org.apache.zookeeper.server.NettyServerCnxnFactory
+ssl.trustStore.location={{ KAFKA_HOME }}/config/{{ ZK_TS_FILE }}
+ssl.trustStore.password={{ ZK_TS_PASS }}
+ssl.keyStore.location={{ KAFKA_HOME }}/config/{{ ZK_KS_FILE }}
+ssl.keyStore.password={{ ZK_KS_PASS }}
+ssl.clientAuth=need
+{%endif%}
+
 # disable the per-ip limit on the number of connections since this is a non-production config
 maxClientCnxns=0
+# Disable the adminserver by default to avoid port conflicts.
+# Set the port to something non-conflicting if choosing to enable this
+admin.enableServer=false
+# admin.serverPort=8080
 # The basic time unit in milliseconds used by ZooKeeper. It is used to do heartbeats and the minimum sesion timeout will be twice the tickTime.
 tickTime=2000
 # The number of ticks that the initial synchronization phase can take

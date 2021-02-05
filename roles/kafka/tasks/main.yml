@@ -3,7 +3,7 @@
   - setup: gather_subset=network
   - set_fact: ip="{{ ansible_default_ipv4.address }}"
   when: ip is not defined
-  tags: ['kafka_setup','zookeeper_setup']
+  tags: ['kafka_setup','zk_setup']
 # Disable Swap
 # Make host entries
 - blockinfile:
@@ -23,6 +23,6 @@
 - import_tasks: install_kafka.yml
   tags: ['kafka_install']
 - import_tasks: setup_zookeeper.yml
-  tags: ['zookeeper_setup']
+  tags: ['zk_setup']
 - import_tasks: setup_kafka.yml
   tags: ['kafka_setup']

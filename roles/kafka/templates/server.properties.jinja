@@ -18,13 +18,18 @@ advertised.listeners={% for li in KAFKA_LISTNERS -%}
 {% if "SSL" in KAFKA_LISTNERS|map(attribute="type") %}
 
 ############################## SSL/TLS ###############################
-ssl.keystore.location=/opt/kafka/config/ssl/kafka{{ BR_ID }}.ks.jks
-ssl.keystore.password=kafka{{ BR_ID }}@123
-ssl.key.password=kafka{{ BR_ID }}@123
-ssl.truststore.location=/opt/kafka/config/ssl/kafka.ts.jks
-ssl.truststore.password=kafkats@123
-ssl.enabled.protocols=TLSv1.2,TLSv1.1,TLSv1
+ 
+#ssl.enabled.protocols=TLSv1.2,TLSv1.1,TLSv1
+security.inter.broker.protocol=SSL
 ssl.client.auth=required
+ssl.protocols=TLSv1.2
+
+# KeyStore Files - Broker 
+ssl.truststore.location={{ KAFKA_HOME }}/config/{{ KAFKA_TS_FILE }}
+ssl.truststore.password={{ KAFKA_TS_PASS }}
+ssl.keystore.location={{ KAFKA_HOME }}/config/{{ KAFKA_KS_FILE }}
+ssl.keystore.password={{ KAFKA_KS_PASS }}
+ssl.key.password={{ KAFKA_KEY_PASS }}
 {% endif %}
 
 ############################# Log Basics #############################
@@ -62,8 +67,23 @@ log.retention.check.interval.ms=300000
 # You can also append an optional chroot string to the urls to specify the
 # root directory for all kafka znodes.
 zookeeper.connect={% for node in groups['zookeeper'] -%}
-  zookeeper{{ hostvars[node]['ZK_ID'] }}:2181{{ "," if not loop.last else "/kafka" }}
+  zookeeper{{ hostvars[node]['ZK_ID'] }}{{
+    ":2182" if ZK_SSL is defined and ZK_SSL is sameas true else ":2181"
+  }}{{ "," if not loop.last else "/kafka" }}
 {%- endfor %}
+
+{% if ZK_SSL is defined and ZK_SSL is sameas true %}
+# Properties for SSL Security between Zookeeper and Brokers
+zookeeper.ssl.client.enable=true
+zookeeper.ssl.protocol=TLSv1.2
+zookeeper.clientCnxnSocket=org.apache.zookeeper.ClientCnxnSocketNetty
+#zookeeper.set.acl=true
+# KeyStore Files - Zookeeper 
+zookeeper.ssl.truststore.location={{ KAFKA_HOME }}/config/{{ KAFKA_TS_FILE }}
+zookeeper.ssl.truststore.password={{ KAFKA_TS_PASS }}
+zookeeper.ssl.keystore.location={{ KAFKA_HOME }}/config/{{ KAFKA_KS_FILE }}
+zookeeper.ssl.keystore.password={{ KAFKA_KS_PASS }}
+{% endif %}
 
 # Timeout in ms for connecting to zookeeper
 zookeeper.connection.timeout.ms=6000

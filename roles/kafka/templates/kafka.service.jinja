@@ -8,6 +8,7 @@ After=network.target
 Type=forking
 WorkingDirectory={{ KAFKA_HOME }}
 Environment="JAVA_HOME={{ JAVA_HOME }}"
+Environment="JMX_PORT=10167"
 ExecStart={{ KAFKA_HOME }}/bin/kafka-server-start.sh -daemon {{ KAFKA_HOME }}/config/server.properties
 ExecStop={{ KAFKA_HOME }}/bin/kafka-server-stop.sh -daemon {{ KAFKA_HOME }}/config/server.properties
 TimeoutSec=30

@@ -72,7 +72,11 @@
   ```
 ## SSL/TLS
 - Generate Certificates `./gen_ssl.sh`
-- ReConfigure Cluster `./playbook.yml` -e KAFKA_SSL=true
+- ReConfigure Cluster `./playbook.yml`
+- Zookeeper SSL Connection 
+  ```bash
+  ./bin/zookeeper-shell.sh zookeeper1:2182 -zk-tls-config-file client.properties
+  ```
 - Test Consumer & Producer with SSL 
   ```bash
   bin/kafka-console-producer.sh --broker-list kafka1:9093  --topic test --producer.config client.properties

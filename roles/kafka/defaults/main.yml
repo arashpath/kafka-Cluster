@@ -1,9 +1,22 @@
 # file: roles/kafka/defaults/main.yml
 # wget -c https://archive.apache.org/dist/kafka/0.10.2.1/kafka_2.12-0.10.2.1.tgz
 KAFKA_HOME: /opt/kafka
-KAFKA_FILE: kafka_2.12-0.10.2.1.tgz
+KAFKA_FILE: kafka_2.13-2.7.0.tgz
+
 ZK_DATA_DIR: /data/zookeeper
+ZK_SSL: True
+ZK_TS_FILE: #trustStore file 
+ZK_TS_PASS: #trustStore password
+ZK_KS_FILE: #keyStore file 
+ZK_KS_PASS: #keyStore password
+
 BR_LOG_DIR: /data/kafka
+KAFKA_TS_FILE:  #trustStore file 
+KAFKA_TS_PASS:  #trustStore password
+KAFKA_KS_FILE:  #keyStore file
+KAFKA_KS_PASS:  #keyStore password 
+KAFKA_KEY_PASS: #key password
+
 KAFKA_LISTNERS:
   - { type: 'PLAINTEXT', port: 9092 }
-  - { type: 'SSL', port: 9093 } 
+  - { type: 'SSL', port: 9093 }
