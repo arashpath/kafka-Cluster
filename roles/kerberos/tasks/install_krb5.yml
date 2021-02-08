@@ -1,0 +1,25 @@
+---
+- name: kerberos server installed 
+  yum: name=krb5-server
+
+- name: kerberos configured
+  copy: src="{{ item.src }}" dest="{{ item.dest }}"
+  with_items:
+  - { src: "kdc.conf", dest: "/var/kerberos/krb5kdc/kdc.conf" }
+  - { src: "kadm5.acl", dest: "/var/kerberos/krb5kdc/kadm5.acl" }
+  - { src: "krb5.conf", dest: "/etc/krb5.conf" }
+
+- name: kerberos db created
+  command:
+    cmd: /usr/sbin/kdb5_util create -s -r KAFKA.SECURE -P this-is-unsecure
+    creates: /var/kerberos/krb5kdc/principal
+
+- name: kerberos admin principal created
+  command: kadmin.local -q "add_principal -pw this-is-unsecure admin/admin"
+  register: admin_principal
+  changed_when: "'already exists' not in admin_principal.stderr"
+
+- name: kerberos server started
+  systemd: name=krb5kdc state=started
+- name: kerberos admin started
+  systemd: name=kadmin state=started

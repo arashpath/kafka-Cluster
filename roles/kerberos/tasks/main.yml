@@ -1,0 +1,38 @@
+---
+- include_tasks: install_krb5.yml
+
+- name: kerberos user principal created
+  command: kadmin.local -q "add_principal -randkey {{ item }}@KAFKA.SECURE"
+  register: user_principal
+  changed_when: "'already exists' not in user_principal.stderr"
+  with_items:
+  - reader
+  - writer
+  - admin
+  # Kafka Principals
+  - kafka/kafka1
+  - kafka/kafka2
+
+- name: export principals to keytab files
+  command: 
+    cmd: kadmin.local -q "xst -kt /tmp/{{ item }}.user.keytab {{ item }}@KAFKA.SECURE"
+    creates: "/tmp/{{ item }}.user.keytab"
+  with_items: ['reader', 'writer', 'admin']
+
+- name: export principals to keytab files for kafka service
+  command: 
+    cmd: kadmin.local -q "xst -kt /tmp/{{ item }}.service.keytab kafka/{{ item }}@KAFKA.SECURE"
+    creates: "/tmp/{{ item }}.service.keytab"
+  with_items:
+    - kafka1
+    - kafka2
+    
+- name: fetch keytabfiles
+  fetch: src="/tmp/{{ item }}.keytab" dest="files/" flat=yes
+  with_items:
+    - reader.user
+    - writer.user
+    - admin.user
+    - kafka1.service
+    - kafka2.service
+  
