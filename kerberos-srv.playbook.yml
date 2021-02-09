@@ -1,0 +1,25 @@
+#!/usr/bin/ansible-playbook
+---
+- name: kerberos server setup
+  hosts: krbsrv
+  become: true
+  pre_tasks: # Launching LXD Container
+    - import_role: name=lxd_inventory
+  roles:
+    - kerberos
+ 
+- name: kerberos client setup
+  hosts: kafka
+  become: true
+  pre_tasks: # Launching LXD Container
+    - import_role: name=lxd_inventory 
+  tasks:
+  - name: install kerberos client
+    include_role: 
+      name: kerberos
+      tasks_from: client
+    
+    
+
+##
+

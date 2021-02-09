@@ -1,0 +1,13 @@
+---
+- name: kerberos client installed 
+  yum: name=krb5-workstation
+
+- name: kerberos client configured
+  copy: src=krb5.conf dest=/etc/krb5.conf
+
+- name: host entry for kerberos server
+  blockinfile:
+    dest: /etc/hosts
+    block: |
+      # Kerberos Server
+      {{ hostvars['krbsrv']['ip'] }} krbsrv

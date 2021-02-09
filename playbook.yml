@@ -1,5 +1,6 @@
 #!/usr/bin/ansible-playbook
 ---
+- import_playbook: kerberos-srv.playbook.yml
 - hosts: kafka,zookeeper
   become: true
   pre_tasks:
