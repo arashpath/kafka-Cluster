@@ -1,6 +1,7 @@
 node1 ZK_ID=1 BR_ID=1
 node2 ZK_ID=2 BR_ID=2
 node3 ZK_ID=3 BR_ID=3
+krbsrv
 
 [zookeeper]
 node[1:3]

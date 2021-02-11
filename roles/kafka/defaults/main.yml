@@ -20,4 +20,4 @@ KAFKA_KEY_PASS: #key password
 KAFKA_LISTNERS:
   - { type: 'PLAINTEXT', port: 9092 }
   - { type: 'SSL', port: 9093 }
-  - { type: 'SASL_SSL', port: 9094 }
+#  - { type: 'SASL_SSL', port: 9094 }
