@@ -2,7 +2,7 @@
 
 # The id of the broker. This must be set to a unique integer for each broker.
 broker.id={{ BR_ID }}
-#listeners=PLAINTEXT://:9092,SSL://:9093
+{# listeners=PLAINTEXT://:9092,SSL://:9093 #}
 listeners={% for li in KAFKA_LISTNERS -%}
   {{ li['type'] }}://:{{ li['port'] }}{{ "," if not loop.last else "" }}
 {%- endfor %}
@@ -10,12 +10,18 @@ listeners={% for li in KAFKA_LISTNERS -%}
 # Hostname and port the broker will advertise to producers and consumers. If not set, 
 # it uses the value for "listeners" if configured.  Otherwise, it will use the value
 # returned from java.net.InetAddress.getCanonicalHostName().
-#advertised.listeners=PLAINTEXT://kafka{{ BR_ID }}:9092,SSL://kafka{{ BR_ID }}:9093
+{# advertised.listeners=PLAINTEXT://kafka{{ BR_ID }}:9092,SSL://kafka{{ BR_ID }}:9093 #}
 advertised.listeners={% for li in KAFKA_LISTNERS -%}
 {{ li['type'] }}://kafka{{ BR_ID }}:{{ li['port'] }}{{ "," if not loop.last else "" }}
 {%- endfor %}
 
-{% if "SSL" in KAFKA_LISTNERS|map(attribute="type") %}
+{% if KAFKA_SASL is defined and KAFKA_SASL == "GSSAPI" %}
+sasl.enabled.mechanisms=GSSAPI
+sasl.kerberos.service.name=kafka
+{% endif %}
+
+
+{% if "SSL" or "SASL_SSL" in KAFKA_LISTNERS|map(attribute="type") %}
 
 ############################## SSL/TLS ###############################
  

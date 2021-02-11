@@ -82,3 +82,19 @@
   bin/kafka-console-producer.sh --broker-list kafka1:9093  --topic test --producer.config client.properties
   bin/kafka-console-consumer.sh --bootstrap-server kafka1:9093  --topic test --consumer.config client.properties --from-beginning
   ```  
+
+## Kerberos / SASL_SSL / GSSAPI
+- Create Client JAAS `kafka_client_jaas.conf`
+  ```conf
+  KafkaClient {
+  com.sun.security.auth.module.Krb5LoginModule required
+  useTicketCache=true;
+  };
+  ```
+- Create Client properties `client.properties`
+- Test Producer
+  ```
+  kinit -kt ./files/reader.user.keytab reader
+  klist
+  export KAFKA_OPTS="-Djava.security.auth.login.config=kafka_client_jaas.conf"
+  ```

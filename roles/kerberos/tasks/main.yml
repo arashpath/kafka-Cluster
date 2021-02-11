@@ -1,6 +1,8 @@
 ---
 - import_tasks: install.yml
+  tags: ['krb_install']
 - import_tasks: principals.yml
+  tags: ['krb_principals']
 
 # Create and Export User Principals
 

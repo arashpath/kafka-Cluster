@@ -3,14 +3,18 @@
   register: user_principal
   changed_when: "'already exists' not in user_principal.stderr"
   with_items:
+  # User Principals
   - reader
   - writer
   - admin
-  # Kafka Principals
+  # Kafka Service Principals
   - kafka/kafka1
   - kafka/kafka2
+  - kafka/kafka3
 
-- name: export principals to keytab files
+
+
+- name: export user principals to keytab files
   command: 
     cmd: kadmin.local -q "xst -kt /tmp/{{ item }}.user.keytab {{ item }}@KAFKA.SECURE"
     creates: "/tmp/{{ item }}.user.keytab"
@@ -23,6 +27,7 @@
   with_items:
     - kafka1
     - kafka2
+    - kafka3
     
 - name: fetch keytabfiles
   fetch: src="/tmp/{{ item }}.keytab" dest="files/" flat=yes
@@ -32,4 +37,5 @@
     - admin.user
     - kafka1.service
     - kafka2.service
+    - kafka3.service
   

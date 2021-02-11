@@ -18,6 +18,9 @@ KAFKA_KS_PASS:  #keyStore password
 KAFKA_KEY_PASS: #key password
 
 KAFKA_LISTNERS:
-  - { type: 'PLAINTEXT', port: 9092 }
-  - { type: 'SSL', port: 9093 }
-#  - { type: 'SASL_SSL', port: 9094 }
+  - { type: 'PLAINTEXT', port: 9092 }  # Open 
+  - { type: 'SSL', port: 9093 }        # Encryption
+#  - { type: 'SASL', port: 9094 }      # Authentication
+  - { type: 'SASL_SSL', port: 9094 }  # Fully Secure
+
+KAFKA_SASL: GSSAPI

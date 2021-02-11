@@ -46,18 +46,17 @@ do
   
   # 
   if [[ "$CN" == "client" ]]; then 
-    echo "Create a client.properties file" 
-    echo "
-# ZooKeeper Client
+    echo "Create a zk_client.properties file" 
+    echo "# ZooKeeper Client
 zookeeper.ssl.client.enable=true
 zookeeper.ssl.protocol=TLSv1.2
 zookeeper.clientCnxnSocket=org.apache.zookeeper.ClientCnxnSocketNetty
 zookeeper.ssl.truststore.location=$ssl_dir/kafka.truststore.jks
 zookeeper.ssl.truststore.password=kafkats@123
 zookeeper.ssl.keystore.location=$ssl_dir/$CN.keystore.jks
-zookeeper.ssl.keystore.password="$CN"@123
-
-# Kafka Client
+zookeeper.ssl.keystore.password=$CN@123" > $ssl_dir/zk_client.properties
+    echo "Create a kafka_client_ssl.properties file" 
+    echo "# Kafka Client for SSL
 security.protocol=SSL
 ssl.protocol=TLSv1.2
 #ssl.enabled.protocols=TLSv1.2,TLSv1.1,TLSv1
@@ -65,8 +64,13 @@ ssl.protocol=TLSv1.2
 ssl.truststore.location=$ssl_dir/kafka.truststore.jks
 ssl.truststore.password=kafkats@123
 ssl.keystore.location=$ssl_dir/$CN.keystore.jks
-ssl.keystore.password="$CN"@123
-ssl.key.password="$CN"@123
-  " > client.properties
+ssl.keystore.password=$CN@123
+ssl.key.password=$CN@123" > $ssl_dir/kafka_client_ssl.properties
+    echo "Create a kafka_client_kerberos.properties file"
+    echo "# Kafka Client for Kerberos
+security.protocol=SASL_SSL
+sasl.kerberos.service.name=kafka
+ssl.truststore.location=$ssl_dir/kafka.truststore.jks
+ssl.truststore.password=kafkats@123" > $ssl_dir/kafka_client_kerberos.properties
   fi
 done

@@ -7,6 +7,9 @@ After=network.target
 [Service]
 Type=forking
 WorkingDirectory={{ KAFKA_HOME }}
+{% if KAFKA_SASL is defined and KAFKA_SASL == "GSSAPI" -%}
+Environment="KAFKA_OPTS=-Djava.security.auth.login.config={{ KAFKA_HOME }}/config/kafka_jaas.conf"
+{% endif %}
 Environment="JAVA_HOME={{ JAVA_HOME }}"
 Environment="JMX_PORT=10167"
 ExecStart={{ KAFKA_HOME }}/bin/kafka-server-start.sh -daemon {{ KAFKA_HOME }}/config/server.properties

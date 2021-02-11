@@ -19,6 +19,16 @@
       backup: yes
     notify: restart kafka
 
+  - name: copy keytab
+    copy: src="kafka{{ BR_ID }}.service.keytab" dest="{{ KAFKA_HOME }}/config/"
+    when: KAFKA_SASL is defined and KAFKA_SASL == "GSSAPI"
+    
+  - name: kafka jaas config
+    template:
+      src: kafka_jaas.conf.jinja
+      dest: "{{ KAFKA_HOME }}/config/kafka_jaas.conf"
+    when: KAFKA_SASL is defined and KAFKA_SASL == "GSSAPI"
+
   - name: systemctl for kafka
     template: 
       src: kafka.service.jinja
