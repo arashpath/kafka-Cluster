@@ -20,8 +20,8 @@ sasl.enabled.mechanisms=GSSAPI
 sasl.kerberos.service.name=kafka
 {% endif %}
 
-
-{% if "SSL" or "SASL_SSL" in KAFKA_LISTNERS|map(attribute="type") %}
+{% if ("SSL" in KAFKA_LISTNERS|map(attribute="type"))
+  or ("SASL_SSL" in KAFKA_LISTNERS|map(attribute="type")) %}
 
 ############################## SSL/TLS ###############################
  
